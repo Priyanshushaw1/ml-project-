@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Fit Group</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="result-body">
+  <div class="result-container">
+    <h1>🎯 You are fit in this group:</h1>
+    <h2 id="groupName"></h2>
+
+    <div class="result-actions">
+      <a href="explore.html" class="explore-btn">🌍 Explore All Groups</a>
+      <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    const group = localStorage.getItem("fitGroup");
+    document.getElementById("groupName").textContent = group || "General Group";
+  </script>
+</body>
+</html>
