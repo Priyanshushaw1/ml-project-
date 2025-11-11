@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interest Form</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="home-body">
+  <div class="home-container">
+    <h1>Tell Us About You</h1>
+
+    <form id="interestForm" class="form-box">
+      <input type="text" id="interest1" placeholder="Interest 1" required />
+      <input type="text" id="interest2" placeholder="Interest 2" required />
+      <input type="text" id="hobby1" placeholder="Hobby 1" required />
+      <input type="text" id="hobby2" placeholder="Hobby 2" required />
+      <input type="text" id="hobby3" placeholder="Hobby 3" required />
+
+      <button type="submit" class="submit-btn">Submit</button>
+      <a href="explore.html" class="explore-btn">🌍 Explore Groups</a>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("interestForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Collect input values
+      const interests = [
+        document.getElementById("interest1").value.trim(),
+        document.getElementById("interest2").value.trim(),
+        document.getElementById("hobby1").value.trim(),
+        document.getElementById("hobby2").value.trim(),
+        document.getElementById("hobby3").value.trim(),
+      ].filter(item => item !== ""); // remove empty values
+
+      try {
+        // Send data to Flask backend
+        const response = await fetch("http://127.0.0.1:5000/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ interests }),
+        });
+
+        if (!response.ok) throw new Error("❌ Server error");
+        const data = await response.json();
+
+        // Save prediction result to localStorage for result.html
+        localStorage.setItem("fitGroup", data.group);
+
+        // Redirect to result page
+        window.location.href = "result.html";
+      } catch (error) {
+        console.error("Error:", error);
+        alert("⚠️ Unable to connect to ML model.\nPlease ensure Flask server is running!");
+      }
+    });
+  </script>
+</body>
+</html>
